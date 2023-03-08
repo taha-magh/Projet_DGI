@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TypeFactureDao extends JpaRepository<TypeFacture, Long> {
+    TypeFacture findByCode(String code);
+    int deleteByCode(String code);
+
 }

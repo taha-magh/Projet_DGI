@@ -12,7 +12,11 @@ public interface FactureClientService {
     FactureClient findByClientCinAndDateFacture(String cin , LocalDateTime dateFacture);
     List<FactureClient> findBySocieteIceAndTaxeIsProduitAndClientCin(String ice, double produit, String cin);
 
+
     List<FactureClient> findAll();
-    int save(FactureClient factureClient);
+    //int save(FactureClient factureClient);
+
+    int save(String cin, LocalDateTime dateFacture);
+
     FactureClient update(FactureClient factureClient);
 }
