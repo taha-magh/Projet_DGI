@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaxeIsDao extends JpaRepository<TaxeIs, Long> {
+    TaxeIs findByRefAndProduit(String ref, double produit);
+
 }

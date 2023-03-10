@@ -5,10 +5,7 @@ import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.FactureClient
 import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.Societe;
 import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.TypeFacture;
 import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.dao.FactureClientDao;
-import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade.ClientService;
-import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade.FactureClientService;
-import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade.SocieteService;
-import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade.TypeFactureService;
+import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,18 +26,21 @@ public class FactureClientServiceImpl implements FactureClientService {
     public FactureClient findByClientCinAndDateFacture(String cin, LocalDateTime dateFacture) {
         return factureClientDao.findByClientCinAndDateFacture(cin,dateFacture);
     }
+
     @Override
-    public List<FactureClient> findBySocieteIceAndTaxeIsProduitAndClientCin(String ice, double produit, String cin) {
-        return factureClientDao.findBySocieteIceAndTaxeIsProduitAndTypeFactureCode(ice, produit, cin);
+    public List<FactureClient> findBySocieteIceAndTaxeIsProduitAndTypeFactureCode(String ice, double produit, String code) {
+        return factureClientDao.findBySocieteIceAndTaxeIsProduitAndTypeFactureCode(ice, produit, code);
     }
+
 
     @Override
     public List<FactureClient> findAll() {
         return factureClientDao.findAll();
     }
     @Override
-    public int save(String cin, LocalDateTime dateFacture){
-        Client client = clientService.findByCin(cin);
+    public int save(String cin, LocalDateTime dateFacture, FactureClient factureClient){
+
+       Client client = clientService.findByCin(cin);
         if (client == null){
             return -1;
         }
@@ -48,19 +48,25 @@ public class FactureClientServiceImpl implements FactureClientService {
         if (societe == null){
             return -2;
         }
-        TypeFacture typeFacture = societe.getTypeFacture() ;
+        TypeFacture typeFacture = typeFactureService.findByCode(factureClient.getTypeFacture().getCode());
         if (typeFacture == null) {
             return -3;
-        }
-        TaxeIs taxeIs = typeFacture.getTaxeIs();
+        }                                  //?????????????????????
+        TaxeIs taxeIs = taxeIsService.findByRefAndProduit(ref,produit);
         // produit de TaxeIs n'existe pas
-        if (taxeIs == null {
+        if (taxeIs == null){
             return -4;
         }else if (taxeIs.getProduit() == null){
             return -5;
+
         }else {
-
-
+            FactureClient factureClient1 = new FactureClient();
+            factureClient1.setClient(client);
+            factureClient1.setTypeFacture(typeFacture);
+            factureClient1.setDateFacture(dateFacture);
+            factureClient1.setSociete(societe);
+            factureClientDao.save(factureClient);
+            return 1;
         }
 
     }
@@ -70,6 +76,7 @@ public class FactureClientServiceImpl implements FactureClientService {
         return factureClientDao.save(factureClient);
     }
 
+
     @Autowired
     private FactureClientDao factureClientDao ;
     @Autowired
@@ -77,6 +84,9 @@ public class FactureClientServiceImpl implements FactureClientService {
 
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private TaxeIsService taxeIsService;
+
     @Autowired
     private SocieteService societeService;
 }

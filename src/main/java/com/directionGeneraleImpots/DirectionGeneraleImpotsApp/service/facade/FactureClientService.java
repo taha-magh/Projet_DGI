@@ -1,5 +1,6 @@
 package com.directionGeneraleImpots.DirectionGeneraleImpotsApp.service.facade;
 
+import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.Client;
 import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.FactureClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,13 +11,11 @@ public interface FactureClientService {
     @Transactional
     int deleteByClientCin(String cin);
     FactureClient findByClientCinAndDateFacture(String cin , LocalDateTime dateFacture);
-    List<FactureClient> findBySocieteIceAndTaxeIsProduitAndClientCin(String ice, double produit, String cin);
-
+    List<FactureClient> findBySocieteIceAndTaxeIsProduitAndTypeFactureCode(String ice, double produit, String code);
 
     List<FactureClient> findAll();
-    //int save(FactureClient factureClient);
 
-    int save(String cin, LocalDateTime dateFacture);
+    int save(String cin, LocalDateTime dateFacture,  FactureClient factureClient);
 
     FactureClient update(FactureClient factureClient);
 }

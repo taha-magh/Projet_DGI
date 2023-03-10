@@ -9,6 +9,7 @@ public class TaxeIs {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String ref;
     private double charge;
     private double produit;
     private double resultatAvantImpot;

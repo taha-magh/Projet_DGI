@@ -2,12 +2,12 @@ package com.directionGeneraleImpots.DirectionGeneraleImpotsApp.webService.dto;
 
 import com.directionGeneraleImpots.DirectionGeneraleImpotsApp.bean.Societe;
 
-public class Fournisseur {
+public class ClientDto {
     private Long id;
     private String cin;
     private String prenom;
     private String nom;
-    private Societe societeFournisseur;
+    private Societe societeClient;
 
     public void setId(Long id) {
         this.id = id;
@@ -42,10 +42,10 @@ public class Fournisseur {
     }
 
     public Societe getSociete() {
-        return societeFournisseur;
+        return societeClient;
     }
 
     public void setSociete(Societe societe) {
-        this.societeFournisseur = societe;
+        this.societeClient = societe;
     }
 }
